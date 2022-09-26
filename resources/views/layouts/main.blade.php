@@ -21,6 +21,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('build/assets/sb-admin.min.css') }}" rel="stylesheet">
+    @livewireStyles
 </head>
 
 <body id="page-top">
@@ -76,7 +77,7 @@
                 </a>
                 <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Users</a>
+                        <a class="collapse-item" href="{{ route('users.index') }}">Users</a>
                         <a class="collapse-item" href="cards.html">Role</a>
                         <a class="collapse-item" href="cards.html">Permission</a>
                     </div>
@@ -168,7 +169,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('build/assets/sb-admin.min.js') }}"></script>
-
+    @method('modals')
+    @livewireScripts
 </body>
 
 </html>
