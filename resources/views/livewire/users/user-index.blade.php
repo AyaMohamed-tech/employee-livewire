@@ -54,7 +54,7 @@
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                    <a href="" class="btn btn-success">Edit</a>
+                                    <button wire:click="showEditModal({{ $user->id }})" class="btn btn-success">Edit</button>
                                 </td>
                             </tr>
                         @empty
@@ -162,8 +162,12 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeModal()">Close</button>
+                        @if($editMode)
+                        <button type="button" class="btn btn-primary" wire:click="updateUser()">Update User</button>
+                        @else 
                         <button type="button" class="btn btn-primary" wire:click="storeUser()">Store User</button>
+                        @endif
                     </div>
                 </div>
             </div>
