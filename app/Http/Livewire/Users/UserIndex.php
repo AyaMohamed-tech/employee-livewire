@@ -35,6 +35,7 @@ class UserIndex extends Component
        $this->reset();
 
        $this->dispatchBrowserEvent('closeModal');
+       session()->flash('user-message','User created successfully');
     }
 
     public function showEditModal($id){
@@ -70,11 +71,20 @@ class UserIndex extends Component
         $user->update($validated);
         $this->reset();
         $this->dispatchBrowserEvent('closeModal');
+        session()->flash('user-message','User updated successfully');
     }
 
     public function closeModal(){
         $this->dispatchBrowserEvent('closeModal');
         $this->reset();
+    }
+
+    public function deleteUser($id){
+
+         $user = User::find($id);
+         $user->delete();
+
+         session()->flash('user-message','User deleted successfully');
     }
 
     public function render()

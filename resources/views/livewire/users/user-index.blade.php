@@ -6,9 +6,9 @@
     <div class="row">
         <div class="card  mx-auto">
             <div>
-                @if (session()->has('message'))
+                @if (session()->has('user-message'))
                     <div class="alert alert-success">
-                        {{ session('message') }}
+                        {{ session('user-message') }}
                     </div>
                 @endif
             </div>
@@ -55,6 +55,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>
                                     <button wire:click="showEditModal({{ $user->id }})" class="btn btn-success">Edit</button>
+                                    <button wire:click="deleteUser({{ $user->id }})" class="btn btn-danger" onclick="confirm('Are you sure?');">Delete</button>
                                 </td>
                             </tr>
                         @empty
