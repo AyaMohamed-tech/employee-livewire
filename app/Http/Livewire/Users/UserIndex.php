@@ -37,7 +37,7 @@ class UserIndex extends Component
 
        $this->reset();
 
-       $this->dispatchBrowserEvent('closeModal');
+       $this->dispatchBrowserEvent('modal',['modalId'=>'#userModal','modalAction'=>'hide']);
        session()->flash('user-message','User created successfully');
     }
 
@@ -49,7 +49,13 @@ class UserIndex extends Component
           //load user
           $this->loadUser();
           //show modal
-         $this->dispatchBrowserEvent('showModal');
+       $this->dispatchBrowserEvent('modal',['modalId'=>'#userModal','modalAction'=>'show']);
+         
+    }
+
+    public function showUserModal(){
+        $this->reset();
+       $this->dispatchBrowserEvent('modal',['modalId'=>'#userModal','modalAction'=>'show']);
     }
 
     public function loadUser(){
@@ -73,12 +79,12 @@ class UserIndex extends Component
         $user = User::find($this->userId);
         $user->update($validated);
         $this->reset();
-        $this->dispatchBrowserEvent('closeModal');
+        $this->dispatchBrowserEvent('modal',['modalId'=>'#userModal','modalAction'=>'hide']);
         session()->flash('user-message','User updated successfully');
     }
 
     public function closeModal(){
-        $this->dispatchBrowserEvent('closeModal');
+        $this->dispatchBrowserEvent('modal',['modalId'=>'#userModal','modalAction'=>'hide']);
         $this->reset();
     }
 
