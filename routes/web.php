@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\City\CityIndex;
 use App\Http\Livewire\Users\UserIndex;
 use App\Http\Livewire\Country\CountryIndex;
 use App\Http\Livewire\State\StateIndex;
@@ -35,4 +36,5 @@ Route::middleware(['auth:sanctum','verified'])->group(function(){
     Route::get('/users',UserIndex::class)->name('users.index');
     Route::get('/countries',CountryIndex::class)->name('countries.index');
     Route::get('/states',StateIndex::class)->name('states.index');
+    Route::get('/cities',CityIndex::class)->name('cities.index');
 });
