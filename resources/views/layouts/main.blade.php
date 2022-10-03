@@ -61,7 +61,7 @@
                         <a class="collapse-item" href="{{ route('countries.index') }}">Country</a>
                         <a class="collapse-item" href="{{ route('states.index') }}">State</a>
                         <a class="collapse-item" href="{{ route('cities.index') }}">City</a>
-                        <a class="collapse-item" href="">Department</a>
+                        <a class="collapse-item" href="{{ route('departments.index') }}">Department</a>
                     </div>
                 </div>
             </li>
@@ -169,7 +169,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('build/assets/sb-admin.min.js') }}"></script>
-    @method('modals')
+    
+    @stack('modals')
     @livewireScripts
     <script>
         window.addEventListener('modal', event => {
