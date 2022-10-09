@@ -19,6 +19,8 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- Custom styles for this template-->
     <link href="{{ asset('build/assets/sb-admin.min.css') }}" rel="stylesheet">
     @livewireStyles
@@ -169,6 +171,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('build/assets/sb-admin.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
     @stack('modals')
     @livewireScripts
@@ -176,6 +179,10 @@
         window.addEventListener('modal', event => {
             $(event.detail.modalId).modal(event.detail.modalAction)
         })
+    </script>
+    <script>
+        $("#birthdate").flatpickr();
+        $("#date_hire").flatpickr();
     </script>
 </body>
 

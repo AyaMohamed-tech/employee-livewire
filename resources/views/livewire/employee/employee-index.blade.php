@@ -21,6 +21,14 @@
                                     <input type="search" wire:model="search" class="form-control mb-2"
                                         id="inlineFormInput" placeholder="Jane Doe">
                                 </div>
+                                <div class="col">
+                                    <select wire:model="selectedDepartmentId" class="form-control mb-2">
+                                        <option selected>Choose Department</option>  
+                                     @foreach (App\Models\Department::all() as $department)
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>   
+                                     @endforeach
+                                    </select>
+                                </div>
                                 <div class="col" wire:loading>
                                     <div class="spinner-border" role="status">
                                         <span class="sr-only">Loading...</span>
@@ -43,11 +51,9 @@
                         <tr>
                             <th scope="col">#Id</th>
                             <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Middle Name</th>
-                            <th scope="col">Address</th>
                             <th scope="col">Department</th>
                             <th scope="col">Country</th>
+                            <th scope="col">Date Hired</th>
                             <th scope="col">Manage</th>
                         </tr>
                     </thead>
@@ -56,12 +62,9 @@
                             <tr>
                                 <th scope="row">{{ $employee->id }}</th>
                                 <td>{{ $employee->first_name }}</td>
-                                <td>{{ $employee->last_name }}</td>
-                                <td>{{ $employee->middle_name }}</td>
-                                <td>{{ $employee->address }}</td>
                                 <td>{{ $employee->department->name }}</td>
                                 <td>{{ $employee->country->name }}</td>
-                                 
+                                <td>{{ $employee->date_hire }}</td>
                                 <td>
                                     <button wire:click="showEditModal({{ $employee->id }})" class="btn btn-success">Edit</button>
                                     <button wire:click="deleteEmployee({{ $employee->id }})" class="btn btn-danger" onclick="confirm('Are you sure?');">Delete</button>
@@ -261,7 +264,7 @@
                                     class="col-md-4 col-form-label text-md-right">{{ __('Birthdate') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="birthdate" type="date"
+                                    <input id="birthdate" type="text"
                                         class="form-control @error('birthdate') is-invalid @enderror" wire:model.defer="birthdate">
 
                                     @error('birthdate')
@@ -277,7 +280,7 @@
                                     class="col-md-4 col-form-label text-md-right">{{ __('Date Hire') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="date_hire" type="date"
+                                    <input id="date_hire" type="text"
                                         class="form-control @error('date_hire') is-invalid @enderror" wire:model.defer="date_hire">
 
                                     @error('date_hire')

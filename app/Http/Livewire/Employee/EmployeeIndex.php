@@ -23,6 +23,7 @@ class EmployeeIndex extends Component
     public $birthdate;
     public $date_hire;
     public $employeeId;
+    public $selectedDepartmentId;
     public $editMode = false;
 
     protected $rules = [
@@ -38,8 +39,9 @@ class EmployeeIndex extends Component
         'birthdate'     => 'required',
         'date_hire'     => 'required',
     ];
-    
-    public function storeEmployee(){
+
+    public function storeEmployee()
+    {
         $this->validate();
 
         Employee::create([
@@ -57,84 +59,94 @@ class EmployeeIndex extends Component
         ]);
 
         $this->reset();
-        $this->dispatchBrowserEvent('modal',['modalId'=>'#employeeModal','modalAction'=>'hide']);
-        session()->flash('employee-message','Employee created Successfully');
+        $this->dispatchBrowserEvent('modal', ['modalId' => '#employeeModal', 'modalAction' => 'hide']);
+        session()->flash('employee-message', 'Employee created Successfully');
     }
 
-    public function showEditModal($id){
+    public function showEditModal($id)
+    {
 
         $this->reset();
         $this->editMode = true;
         $this->employeeId = $id;
         $this->loadEmployee();
-        $this->dispatchBrowserEvent('modal',['modalId'=>'#employeeModal','modalAction'=>'show']);
-        
-    } 
+        $this->dispatchBrowserEvent('modal', ['modalId' => '#employeeModal', 'modalAction' => 'show']);
+    }
 
-    public function loadEmployee(){
+    public function loadEmployee()
+    {
         $employee = Employee::find($this->employeeId);
 
-         $this->first_name      = $employee->first_name;
-         $this->last_name       = $employee->last_name;
-         $this->middle_name     = $employee->middle_name;
-         $this->address         = $employee->address;
-         $this->department_id   = $employee->department_id;
-         $this->country_id      = $employee->country_id;
-         $this->state_id        = $employee->state_id;
-         $this->city_id         = $employee->city_id;
-         $this->zip_code        = $employee->zip_code;
-         $this->birthdate       = $employee->birthdate;
-         $this->date_hire       = $employee->date_hire;
-   }
+        $this->first_name      = $employee->first_name;
+        $this->last_name       = $employee->last_name;
+        $this->middle_name     = $employee->middle_name;
+        $this->address         = $employee->address;
+        $this->department_id   = $employee->department_id;
+        $this->country_id      = $employee->country_id;
+        $this->state_id        = $employee->state_id;
+        $this->city_id         = $employee->city_id;
+        $this->zip_code        = $employee->zip_code;
+        $this->birthdate       = $employee->birthdate;
+        $this->date_hire       = $employee->date_hire;
+    }
 
-   public function updateEmployee(){
+    public function updateEmployee()
+    {
 
-    $validated = $this->validate([
-        'first_name'    => 'required',
-        'last_name'     => 'required',
-        'middle_name'   => 'required',
-        'address'       => 'required',
-        'department_id' => 'required',
-        'country_id'    => 'required',
-        'state_id'      => 'required',
-        'city_id'       => 'required',
-        'zip_code'      => 'required',
-        'birthdate'     => 'required',
-        'date_hire'     => 'required',
-    ]);
+        $validated = $this->validate([
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'middle_name'   => 'required',
+            'address'       => 'required',
+            'department_id' => 'required',
+            'country_id'    => 'required',
+            'state_id'      => 'required',
+            'city_id'       => 'required',
+            'zip_code'      => 'required',
+            'birthdate'     => 'required',
+            'date_hire'     => 'required',
+        ]);
 
-    $employee = Employee::find($this->employeeId);
-    $employee->update($validated);
+        $employee = Employee::find($this->employeeId);
+        $employee->update($validated);
 
-    $this->reset();
-    $this->dispatchBrowserEvent('modal',['modalId'=>'#employeeModal','modalAction'=>'hide']);
-    session()->flash('employee-message','Employee updated Successfully');
+        $this->reset();
+        $this->dispatchBrowserEvent('modal', ['modalId' => '#employeeModal', 'modalAction' => 'hide']);
+        session()->flash('employee-message', 'Employee updated Successfully');
+    }
+    public function deleteEmployee($id)
+    {
+        $employee = Employee::find($id);
+        $employee->delete();
+        session()->flash('employee-message', 'Employee deleted successfully');
+    }
 
-  }
-   public function deleteEmployee($id){
-    $employee = Employee::find($id);
-    $employee->delete();
-    session()->flash('employee-message','Employee deleted successfully');
+    public function closeModal()
+    {
 
-}
-
-    public function closeModal(){
-
-        $this->dispatchBrowserEvent('modal',['modalId'=>'#employeeModal','modalAction'=>'hide']);
+        $this->dispatchBrowserEvent('modal', ['modalId' => '#employeeModal', 'modalAction' => 'hide']);
         $this->reset();
     }
-    public function showEmployeeModal(){
+    public function showEmployeeModal()
+    {
         $this->reset();
-        $this->dispatchBrowserEvent('modal',['modalId'=>'#employeeModal','modalAction'=>'show']);
+        $this->dispatchBrowserEvent('modal', ['modalId' => '#employeeModal', 'modalAction' => 'show']);
     }
     public function render()
     {
         $employees = Employee::paginate(5);
 
-        if(strlen($this->search>2)){
-            $employees = Employee::where('first_name','like',"%{$this->search}%")->paginate(5);
+        if (strlen($this->search > 2)) {
+            if ($this->selectedDepartmentId) {
+                $employees = Employee::where('first_name', 'like', "%{$this->search}%")
+                    ->where('department_id', $this->selectedDepartmentId)->paginate(5);
+            } else {
+                $employees = Employee::where('first_name', 'like', "%{$this->search}%")->paginate(5);
+            }
+        } elseif ($this->selectedDepartmentId) {
+            $employees = Employee::where('department_id', $this->selectedDepartmentId)->paginate(5);
         }
-        return view('livewire.employee.employee-index',[
+        return view('livewire.employee.employee-index', [
             'employees' => $employees
         ])->layout('layouts.main');
     }
